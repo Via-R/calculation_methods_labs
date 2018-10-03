@@ -43,7 +43,7 @@ class Approximator:
 			self._add_entry("x[{}] = {}".format(iterations, x_main), False)
 			x_old, x_main = x_main, self._iter(x_main)
 			iterations += 1
-		self._add_entry("\nРозраховане наближення кореня заданого рівняння: {}\nАпостеріорна оцінка кількості ітерацій: {}".format(format(float(x_main), ".4g"), iterations))
+		self._add_entry("\nРозраховане наближення кореня заданого рівняння: {}\nАпостеріорна оцінка кількості ітерацій: {}".format(format(float(x_main), ".4g"), iterations - 1))
 		self._add_entry(">----------------------------<", False)
 
 	def get_log(self):

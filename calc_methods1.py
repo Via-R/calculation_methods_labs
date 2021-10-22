@@ -40,7 +40,7 @@ class Approximator:
 		iterations = 1
 		x_old = self.x0
 		while abs(x_main - x_old) > eps:
-			self._add_entry("x[{}] = {}".format(iterations, x_main), False)
+			self._add_entry("x[{}] = {}".format(iterations, float(x_main)), False)
 			x_old, x_main = x_main, self._iter(x_main)
 			iterations += 1
 		self._add_entry("\nРозраховане наближення кореня заданого рівняння: {}\nАпостеріорна оцінка кількості ітерацій: {}".format(format(float(x_main), ".4g"), iterations - 1))
@@ -58,9 +58,9 @@ class IterationsAprx(Approximator):
 	def __init__(self):
 		super().__init__()
 		# Корінь знаходиться на проміжку [1, 2], перша похідна функції x = (3-x)^(1/5) на заданому проміжку має максимум 1/5, в якості першого наближення обираємо лівий край проміжку
-		self.a = 1
-		self.b = 2
-		self.x0 = 1
+		self.a = Q(1)
+		self.b = Q(2)
+		self.x0 = Q(1)
 		self.q = Q(1, 5)
 		self.name = "Метод простих ітерацій"
 
@@ -80,7 +80,7 @@ class NewtonAprx(Approximator):
 	def __init__(self):
 		super().__init__()
 		# Корінь знаходиться на проміжку [1, 6/5], m[1] = 6, M[2] = 864/25
-		self.a = 1
+		self.a = Q(1)
 		self.b = Q(6, 5)
 		self.x0 = Q(6, 5)
 		self.q = Q(72, 125)
@@ -89,12 +89,12 @@ class NewtonAprx(Approximator):
 	def _eval_iterations(self):
 		"""Виконує розрахунок асимптотичної оцінки кільькості ітерацій."""
 
-		self.n = ceil(log2((log(1 / (5 * eps))) / (log(1 / self.q)) + 1) + 1)
+		self.n = ceil(log2((log(Q(1) / (5 * eps))) / (log(1 / self.q)) + 1) + 1)
 
 	def _iter(self, x):
 		"""Виконує одну ітерацію розв'язку."""
 
-		return float(x - (x**5 + x - 3)/(5 * x**4 + 1))
+		return (x - (x**5 + x - 3)/(5 * x**4 + 1))
 
 
 if __name__ == "__main__":
@@ -103,4 +103,3 @@ if __name__ == "__main__":
 
 	solver = NewtonAprx()
 	print(solver.get_log())
-	
